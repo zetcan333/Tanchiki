@@ -5,11 +5,11 @@ import (
 	"strings"
 )
 
-type BatleField struct {
+type BattleField struct {
 	Size int
 }
 
-func (p *BatleField) StringRender() {
+func (p *BattleField) StringRender() {
 	GameMap := CreateEmptyMap(p.Size)
 	for i := 0; i < p.Size+2; i++ {
 		out := strings.Join(GameMap[i], " ")
@@ -23,7 +23,7 @@ const (
 )
 
 func main() {
-	var field BatleField
+	var field BattleField
 	fmt.Scan(&field.Size)
 	field.StringRender()
 }
