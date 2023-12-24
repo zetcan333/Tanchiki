@@ -9,8 +9,7 @@ type BatleField struct {
 	Size int
 }
 
-func (p *BatleField) StringRender(x int) {
-	p.Size = x
+func (p *BatleField) StringRender() {
 	GameMap := CreateEmptyMap(p.Size)
 	for i := 0; i < p.Size+2; i++ {
 		out := strings.Join(GameMap[i], " ")
@@ -18,28 +17,32 @@ func (p *BatleField) StringRender(x int) {
 	}
 }
 
+const (
+	border = "0"
+	cell   = "-"
+)
+
 func main() {
 	var field BatleField
 	fmt.Scan(&field.Size)
-	field.StringRender(field.Size)
+	field.StringRender()
 }
 
 func CreateEmptyMap(x int) [][]string {
-	x += 2 // Это пока для наглядности
-	GameMap := make([][]string, x)
+	GameMap := make([][]string, x+2)
 	for i := range GameMap {
-		GameMap[i] = make([]string, x)
+		GameMap[i] = make([]string, x+2)
 	}
 	for i := range GameMap {
-		if i == 0 || i == x-1 {
+		if i == 0 || i == x+1 {
 			for j := range GameMap[i] {
-				GameMap[i][j] = "0"
+				GameMap[i][j] = border
 			}
 		} else {
-			GameMap[i][0] = "0"
-			GameMap[i][x-1] = "0"
-			for j := 1; j < x-1; j++ {
-				GameMap[i][j] = "-"
+			GameMap[i][0] = border
+			GameMap[i][x+1] = border
+			for j := 1; j < x+1; j++ {
+				GameMap[i][j] = cell
 			}
 		}
 	}
