@@ -9,12 +9,13 @@ type BattleField struct {
 	Size int
 }
 
-func (p *BattleField) StringRender() {
+func (p *BattleField) String() string {
 	GameMap := CreateEmptyMap(p.Size)
+	out := ""
 	for i := 0; i < p.Size+2; i++ {
-		out := strings.Join(GameMap[i], " ")
-		fmt.Println(out)
+		out += strings.Join(GameMap[i], "")
 	}
+	return out
 }
 
 const (
@@ -25,7 +26,14 @@ const (
 func main() {
 	var field BattleField
 	fmt.Scan(&field.Size)
-	field.StringRender()
+	render := field.String()
+	step := field.Size + 2
+	for i := 0; i < len(render); i += step {
+		pre := strings.Split(render[i:i+step], "")
+		out := strings.Join(pre, " ")
+		fmt.Println(out)
+	}
+
 }
 
 func CreateEmptyMap(x int) [][]string {
