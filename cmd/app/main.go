@@ -11,10 +11,16 @@ type BattleField struct {
 
 func (p *BattleField) String() string {
 	GameMap := CreateEmptyMap(p.Size)
-	out := ""
-	for i := 0; i < p.Size+2; i++ {
-		out += strings.Join(GameMap[i], "")
+	out := strings.Repeat("s ", p.Size+2)
+	out, _ = strings.CutSuffix(out, " ")
+	for i := 0; i < p.Size; i++ {
+		out += "s "
+		out += strings.Join(GameMap[i], " ")
+		out += " s"
 	}
+	out += strings.Repeat("s ", p.Size+2)
+	out, _ = strings.CutSuffix(out, " ")
+	out = strings.Replace(out, "s", border, -1)
 	return out
 }
 
@@ -27,31 +33,18 @@ func main() {
 	var field BattleField
 	fmt.Scan(&field.Size)
 	render := field.String()
-	step := field.Size + 2
-	for i := 0; i < len(render); i += step {
-		pre := strings.Split(render[i:i+step], "")
-		out := strings.Join(pre, " ")
-		fmt.Println(out)
+	line := (field.Size+2)*2 - 1
+	for i := 0; i < (line * (field.Size + 2)); i += line {
+		fmt.Println(render[i : i+line])
 	}
-
 }
 
 func CreateEmptyMap(x int) [][]string {
-	GameMap := make([][]string, x+2)
+	GameMap := make([][]string, x)
 	for i := range GameMap {
-		GameMap[i] = make([]string, x+2)
-	}
-	for i := range GameMap {
-		if i == 0 || i == x+1 {
-			for j := range GameMap[i] {
-				GameMap[i][j] = border
-			}
-		} else {
-			GameMap[i][0] = border
-			GameMap[i][x+1] = border
-			for j := 1; j < x+1; j++ {
-				GameMap[i][j] = cell
-			}
+		GameMap[i] = make([]string, x)
+		for j := range GameMap[i] {
+			GameMap[i][j] = cell
 		}
 	}
 	return GameMap
