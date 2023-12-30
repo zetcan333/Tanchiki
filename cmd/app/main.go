@@ -12,14 +12,14 @@ type BattleField struct {
 func (p *BattleField) String() string {
 	GameMap := CreateEmptyMap(p.Size)
 	out := strings.Repeat("s ", p.Size+2)
-	out, _ = strings.CutSuffix(out, " ")
+	out = out[:len(out)-1] + "\n"
 	for i := 0; i < p.Size; i++ {
 		out += "s "
 		out += strings.Join(GameMap[i], " ")
-		out += " s"
+		out += " s\n"
 	}
 	out += strings.Repeat("s ", p.Size+2)
-	out, _ = strings.CutSuffix(out, " ")
+	out = out[:len(out)-1] + "\n"
 	out = strings.Replace(out, "s", border, -1)
 	return out
 }
@@ -32,13 +32,8 @@ const (
 func main() {
 	var field BattleField
 	fmt.Scan(&field.Size)
-	render := field.String()
-	line := (field.Size+2)*2 - 1
-	for i := 0; i < (line * (field.Size + 2)); i += line {
-		fmt.Println(render[i : i+line])
-	}
+	fmt.Println(field.String())
 }
-
 func CreateEmptyMap(x int) [][]string {
 	GameMap := make([][]string, x)
 	for i := range GameMap {
