@@ -11,7 +11,12 @@ import (
 
 type BattleField struct {
 	Size   int
-	Player [2]int
+	Player Player
+}
+
+type Player struct {
+	cordX int
+	cordY int
 }
 
 func (p BattleField) EmptyMap() [][]string {
@@ -42,7 +47,7 @@ func (p BattleField) AddBorders(Map *[][]string) {
 }
 
 func (p BattleField) AddPlayer(GameMap *[][]string) {
-	i, j := p.Player[0], p.Player[1]
+	i, j := p.Player.cordY, p.Player.cordX
 	(*GameMap)[i][j] = player
 }
 
@@ -80,29 +85,25 @@ func (p *BattleField) Moving() {
 			panic(err)
 		}
 		if key == keyboard.KeyEsc {
-			break
+			return
 		}
 		switch string(char) {
 		case "w":
-			if p.Player[0] == 0 {
-				break
+			if p.Player.cordY != 0 {
+				p.Player.cordY--
 			}
-			p.Player[0]--
 		case "a":
-			if p.Player[1] == 0 {
-				break
+			if p.Player.cordX != 0 {
+				p.Player.cordX--
 			}
-			p.Player[1]--
 		case "s":
-			if p.Player[0] == p.Size-1 {
-				break
+			if p.Player.cordY != p.Size-1 {
+				p.Player.cordY++
 			}
-			p.Player[0]++
 		case "d":
-			if p.Player[1] == p.Size-1 {
-				break
+			if p.Player.cordX != p.Size-1 {
+				p.Player.cordX++
 			}
-			p.Player[1]++
 
 		default:
 			continue
@@ -126,7 +127,7 @@ func main() {
 	fmt.Print("Размер поля: ")
 	fmt.Scanln(&field.Size)
 	fmt.Print("Начальные координаты игрока (x, y): ")
-	fmt.Scan(&field.Player[1], &field.Player[0])
+	fmt.Scan(&field.Player.cordX, &field.Player.cordY)
 	fmt.Println("Press ESC to quit")
 	fmt.Println(field)
 	field.Moving()
